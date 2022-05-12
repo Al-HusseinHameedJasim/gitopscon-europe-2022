@@ -1,0 +1,16 @@
+apiVersion: ecr.aws.crossplane.io/v1beta1
+kind: Repository
+metadata:
+  name: xp-aws-ecr
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+  labels:
+    region: eu-north-1
+spec:
+  forProvider:
+    region: eu-north-1
+    imageScanningConfiguration:
+      scanOnPush: true
+    imageTagMutability: IMMUTABLE
+  providerConfigRef:
+    name: aws-provider-config
