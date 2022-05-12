@@ -1,0 +1,30 @@
+apiVersion: azure.crossplane.io/v1alpha3
+kind: ResourceGroup
+metadata:
+  name: xp-azure-rg
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  location: West Europe
+  providerConfigRef:
+    name: azure-provider-config
+---
+apiVersion: storage.azure.crossplane.io/v1alpha3
+kind: Account
+metadata:
+  name: xpazureacc
+spec:
+  resourceGroupName: xp-azure-rg
+  storageAccountSpec:
+    kind: Storage
+    location: westeurope
+    sku:
+      name: Standard_LRS
+      tier: Standard
+    tags:
+      application: crossplane
+  providerConfigRef:
+    name: azure-provider-config
+  writeConnectionSecretToRef:
+    name: xpacc-connection-details
+    namespace: crossplane-system
